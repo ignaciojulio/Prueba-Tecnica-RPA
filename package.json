@@ -6,7 +6,7 @@
   "scripts": {
     "start": "node src/index.js",
     "once": "node src/pipeline/runOnce.js",
-    "test": "jest --runInBand"
+    "test": "jest"
   },
   "repository": {
     "type": "git",
@@ -29,6 +29,6 @@
   "devDependencies": {
     "eslint": "^9.10.0",
     "jest": "^29.7.0",
-    "nock": "^13.5.0"
+    "nock": "^13.5.6"
   }
 }
