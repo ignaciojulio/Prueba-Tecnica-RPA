@@ -1,29 +1,20 @@
-const axios = require('axios');
+import express from 'express';
+import dotenv from 'dotenv';
+import server from './server.js'; // Importar el controlador
 
-// Función para obtener los datos de clima
-async function getWeatherData(lat, lon) {
-  const url = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=temperature_2m,wind_speed_10m&hourly=temperature_2m,relative_humidity_2m,wind_speed_10m,precipitation,uv_index`;
-  const response = await axios.get(url);
-  return response.data;
-}
+dotenv.config(); // Cargar las variables de entorno
 
-// Función para obtener el tipo de cambio
-async function getExchangeData() {
-  const url = 'https://api.exchangerate-api.com/v4/latest/USD';
-  const response = await axios.get(url);
-  return response.data;
-}
+const app = express();
+const port = process.env.PORT || 3000;
 
-// Función para obtener la hora local
-async function getTimeData(timezone) {
-  const url = `http://worldtimeapi.org/api/timezone/${timezone}`;
-  const response = await axios.get(url);
-  return response.data;
-}
+// Middleware para habilitar el uso de JSON
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
-// Exportar las funciones para que puedan ser usadas en los tests
-module.exports = {
-  getWeatherData,
-  getExchangeData,
-  getTimeData
-};
+// Rutas
+app.use('/api', server); // Pasar el manejo de rutas a server.js
+
+// Iniciar el servidor
+app.listen(port, () => {
+  console.log(`Servidor ejecutándose en el puerto ${port}`);
+});
