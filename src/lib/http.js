@@ -1,14 +1,16 @@
+import dotenv from 'dotenv';
 import axios from 'axios';
 import axiosRetry from 'axios-retry';
 
+dotenv.config();  
 // Crear una instancia de axios
 const axiosInstance = axios.create({
-  timeout: 10000, // 10 segundos de timeout máximo
+  timeout: process.env.TIMEOUT, // 10 segundos de timeout máximo
 });
 
 // Configurar axios con reintentos exponenciales
 axiosRetry(axiosInstance, {
-  retries: 5,  // Número máximo de reintentos
+  retries: process.env.RETRIES,  // Número máximo de reintentos
   retryDelay: axiosRetry.exponentialDelay,  // Retraso exponencial entre los intentos
   retryCondition: (error) => {
     // Condición para reintentar (si es un error de red como ECONNRESET)
