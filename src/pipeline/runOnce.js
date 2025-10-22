@@ -1,14 +1,14 @@
-import { collectCityData } from '../lib/dataCollector.js'; // Función centralizada para recolectar datos
-import { saveRawData, saveProcessedData } from '../lib/dataStorage.js'; // Funciones para guardar datos
-import { logger } from '../lib/logger.js'; // Para los logs
-import cities from '../config/cities.js'; // Importar ciudades
+import { collectCityData } from '../lib/dataCollector.js';
+import { saveRawData, saveProcessedData } from '../lib/dataStorage.js';
+import { logger } from '../lib/logger.js';
+import cities from '../config/cities.js';
 import fs from 'fs';
 import path from 'path';
-import { fileURLToPath } from 'url'; // Importar la función para convertir la URL en una ruta
+import { fileURLToPath } from 'url';
 
 // Obtener el directorio actual (equivalente a __dirname en CommonJS)
-const __filename = fileURLToPath(import.meta.url); // Obtener la URL actual
-const __dirname = path.dirname(__filename); // Convertir la URL en un path
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 const runOnce = async () => {
   try {

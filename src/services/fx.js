@@ -7,8 +7,8 @@ export const getExchangeData = async (currency) => {
 
   // Convertir el tipo de cambio de USD a la moneda local
   const exchangeRate = data.rates[currency];
-  const variation = (exchangeRate - 1) * 100; // Calcula la variación en porcentaje respecto al USD
-  const trend = variation < 2 ? 'estable' : 'volátil'; // Clasifica la tendencia como 'estable' o 'volátil'
+  const variation = (exchangeRate - 1) * 100;
+  const trend = variation < 2 ? 'estable' : 'volátil';
 
   return {
     exchangeRate,

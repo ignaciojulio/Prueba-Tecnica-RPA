@@ -1,14 +1,14 @@
-import { fileURLToPath } from 'url'; // Importar la función para convertir la URL en una ruta
+import { fileURLToPath } from 'url';
 import path from 'path';
-import fs from 'fs'; // Importar el módulo fs para manejar archivos
+import fs from 'fs';
 
 // Obtener el directorio actual (equivalente a __dirname en CommonJS)
-const __filename = fileURLToPath(import.meta.url); // Obtener la URL actual
-const __dirname = path.dirname(__filename); // Convertir la URL en un path
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 // Ruta de las carpetas de datos, ahora apuntando a la raíz del proyecto
-const rawDataPath = path.join(__dirname, '../../data/raw'); // Ahora apunta a la raíz
-const processedDataPath = path.join(__dirname, '../../data/processed'); // Ahora apunta a la raíz
+const rawDataPath = path.join(__dirname, '../../data/raw');
+const processedDataPath = path.join(__dirname, '../../data/processed');
 
 // Logs para verificar las rutas
 console.log(`Ruta de datos crudos: ${rawDataPath}`);

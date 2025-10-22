@@ -1,14 +1,14 @@
 import dotenv from 'dotenv';
 import express from 'express';
-import { fileURLToPath } from 'url';  // Importar para obtener el directorio del archivo
-import { dirname } from 'path'; // Importar para trabajar con directorios
-import path from 'path'; // Asegúrate de importar path correctamente
-import { logger } from './lib/logger.js'; // Para los logs
-import { collectCityData } from './lib/dataCollector.js'; // Función centralizada para recolectar datos
-import { saveRawData, saveProcessedData } from './lib/dataStorage.js'; // Funciones para guardar datos
-import cities from './config/cities.js'; // Importar ciudades
-import cron from 'node-cron'; // Para la automatización
-import { calculateIVV, determineRiskLevel } from './rules/ivv.js'; // Asegúrate de importar calculateIVV desde ivv.js
+import { fileURLToPath } from 'url';
+import { dirname } from 'path';
+import path from 'path';
+import { logger } from './lib/logger.js';
+import { collectCityData } from './lib/dataCollector.js';
+import { saveRawData, saveProcessedData } from './lib/dataStorage.js';
+import cities from './config/cities.js';
+import cron from 'node-cron';
+import { calculateIVV, determineRiskLevel } from './rules/ivv.js';
 
 dotenv.config();
 const router = express.Router();
@@ -17,7 +17,7 @@ const router = express.Router();
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
-router.use(express.static(path.join(__dirname, '..', 'public'))); // Servir archivos estáticos desde la carpeta pública
+router.use(express.static(path.join(__dirname, '..', 'public'))); 
 
 // Ruta para redirigir a index.html cuando el usuario accede a la raíz
 router.get('/', (req, res) => {

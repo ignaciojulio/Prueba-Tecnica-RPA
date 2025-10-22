@@ -1,8 +1,8 @@
 import express from 'express';
 import dotenv from 'dotenv';
-import server from './server.js'; // Usar import para traer el enrutador
+import server from './server.js';
 
-dotenv.config(); // Cargar las variables de entorno
+dotenv.config();
 
 const app = express();
 const port = process.env.PORT || 3000;
@@ -12,9 +12,9 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 // Rutas
-app.use('/api', server); // Pasar el manejo de rutas a server.js
+app.use('/api', server);
 
-app.get('/', server); // Manejar la ruta raíz con el enrutador
+app.get('/', server);
 
 // Iniciar el servidor
 app.listen(port, () => {

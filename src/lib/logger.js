@@ -4,14 +4,14 @@ import winston from 'winston';
 export const logger = winston.createLogger({
   level: 'info', // El nivel de log predeterminado (puede ser 'info', 'warn', 'error')
   format: winston.format.combine(
-    winston.format.timestamp(), // Añadir timestamp a los logs
-    winston.format.json() // Formato de log en JSON
+    winston.format.timestamp(),
+    winston.format.json()
   ),
   transports: [
     // Transportes para almacenar los logs
-    new winston.transports.Console({ format: winston.format.simple() }), // Imprimir en consola
-    new winston.transports.File({ filename: 'logs/exec/exec.log', level: 'info' }), // Guardar logs de ejecución
-    new winston.transports.File({ filename: 'logs/errors/errors.log', level: 'error' }) // Guardar logs de errores
+    new winston.transports.Console({ format: winston.format.simple() }),
+    new winston.transports.File({ filename: 'logs/exec/exec.log', level: 'info' }),
+    new winston.transports.File({ filename: 'logs/errors/errors.log', level: 'error' })
   ]
 });
 
