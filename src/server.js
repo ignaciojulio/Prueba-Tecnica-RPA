@@ -1,5 +1,8 @@
 import dotenv from 'dotenv';
 import express from 'express';
+import { fileURLToPath } from 'url';  // Importar para obtener el directorio del archivo
+import { dirname } from 'path'; // Importar para trabajar con directorios
+import path from 'path'; // Asegúrate de importar path correctamente
 import { logger } from './lib/logger.js'; // Para los logs
 import { collectCityData } from './lib/dataCollector.js'; // Función centralizada para recolectar datos
 import { saveRawData, saveProcessedData } from './lib/dataStorage.js'; // Funciones para guardar datos
@@ -10,33 +13,36 @@ import { calculateIVV, determineRiskLevel } from './rules/ivv.js'; // Asegúrate
 dotenv.config();
 const router = express.Router();
 
-// Ruta para obtener los datos de las APIs
+// Obtener el directorio actual usando ESM
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+
+router.use(express.static(path.join(__dirname, '..', 'public'))); // Servir archivos estáticos desde la carpeta pública
+
+// Ruta para redirigir a index.html cuando el usuario accede a la raíz
+router.get('/', (req, res) => {
+  res.sendFile(path.join(__dirname, '..', 'public', 'index.html')); 
+});
+
+// Rutas para obtener los datos de las APIs
 router.get('/data', async (req, res) => {
   try {
     logger.info('Iniciando la recolección de datos...');
 
-    // Usamos la nueva función centralizada para recolectar los datos
     const cityData = await collectCityData(cities);
-
-    // Guardar los datos crudos (raw) en la carpeta 'raw'
     await saveRawData(cityData, 'cityData_raw.json');
 
-    // Procesar los datos (por ejemplo, calcular IVV y niveles de riesgo)
     const processedData = cityData.map(city => {
-      // Procesamiento de datos (calcular IVV, determinar el nivel de riesgo, etc.)
       return {
         ...city,
-        ivv: calculateIVV(city.weather, city.exchange, city.time), // Ejemplo de cálculo de IVV
-        riskLevel: determineRiskLevel(city.ivv) // Determinar el nivel de riesgo
+        ivv: calculateIVV(city.weather, city.exchange, city.time),
+        riskLevel: determineRiskLevel(city.ivv),
       };
     });
 
-    // Guardar los datos procesados en la carpeta 'processed'
     await saveProcessedData(processedData, 'cityData_processed.json');
-
     logger.info('Datos recolectados y guardados exitosamente.');
-
-    res.json(cityData); // Retornar los datos de las ciudades
+    res.json(cityData);
 
   } catch (error) {
     logger.error(`Error al recolectar datos: ${error.message}`);
@@ -44,34 +50,27 @@ router.get('/data', async (req, res) => {
   }
 });
 
-// Configurar el cron con el intervalo definido en el .env
+// Cron job
 cron.schedule(process.env.CRON_INTERVAL, async () => {
   logger.info('Ejecutando proceso automatizado...');
-
   try {
-    // Usamos la función centralizada para recolectar los datos
     const cityData = await collectCityData(cities);
-
-    // Guardar los datos crudos (raw) en la carpeta 'raw'
     await saveRawData(cityData, 'cityData_raw.json');
 
-    // Procesar los datos (calcular IVV, determinar el nivel de riesgo, etc.)
     const processedData = cityData.map(city => {
       return {
         ...city,
         ivv: calculateIVV(city.weather, city.exchange, city.time),
-        riskLevel: determineRiskLevel(city.ivv)
+        riskLevel: determineRiskLevel(city.ivv),
       };
     });
 
-    // Guardar los datos procesados en la carpeta 'processed'
     await saveProcessedData(processedData, 'cityData_processed.json');
-
-    logger.info('Datos recolectados correctamente:');
-
+    logger.info('Datos recolectados correctamente.');
   } catch (error) {
     logger.error(`Error al recolectar datos en el cron: ${error.message}`);
   }
 });
 
+// Exportar el enrutador de Express usando export
 export default router;
