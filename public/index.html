@@ -3,20 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="shortcut icon" href="./logo-mission-completo.png" />
-    <title>Dashboard - TravelCorp/Mission</title>
-    <!-- Bootstrap CSS -->
-    <link href="node_modules/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" />
-    <!-- Estilos personalizados (si los tienes) -->
-    <link rel="stylesheet" href="public/styles.css" />
-    <!-- Agregar el mapa interactivo -->
-    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
-    <!-- Chart.js para los gráficos -->
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <title>Dashboard - Integración Looker Studio</title>
 </head>
 
 <body>
     <div class="container-fluid">
+        <h1 class="text-center my-4">Dashboard de Viajes - Datos en Tiempo Real</h1>
+        
         <!-- Barra de navegación -->
         <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
             <a class="navbar-brand" href="#">TravelCorp Dashboard</a>
@@ -39,100 +33,20 @@
             </div>
         </nav>
 
-        <!-- Contenedor principal para el dashboard -->
-        <div class="row my-4">
-            <!-- Mapa de ciudades con IVV -->
-            <div class="col-md-6">
-                <h3>Mapa de Ciudades</h3>
-                <div id="map" style="height: 400px;"></div>
-            </div>
-
-            <!-- Gráfico de Líneas para la evolución de la temperatura -->
-            <div class="col-md-6">
-                <h3>Temperatura en los Últimos 7 Días</h3>
-                <canvas id="temperatureChart"></canvas>
-            </div>
-        </div>
-
-        <!-- Gráfico de Barras para la comparación de tipos de cambio -->
+        <!-- Contenedor para el reporte de Looker Studio -->
         <div class="row my-4">
             <div class="col-md-12">
-                <h3>Comparación de Tipos de Cambio</h3>
-                <canvas id="exchangeRateChart"></canvas>
+                <h3>Reporte Interactivo de Clima y Finanzas</h3>
+                <!-- Incluir Looker Studio en un iframe -->
+                <div class="embed-responsive embed-responsive-16by9">
+                    <iframe width="100%" height="450" src="https://lookerstudio.google.com/embed/reporting/bfcf023f-63b5-454a-8d0b-66bd36b64701/page/CpbcF" frameborder="0" style="border:0" allowfullscreen sandbox="allow-storage-access-by-user-activation allow-scripts allow-same-origin allow-popups allow-popups-to-escape-sandbox"></iframe>
+                </div>
             </div>
         </div>
 
-        <!-- Lista de alertas -->
-        <div class="row my-4">
-            <div class="col-md-12">
-                <h3>Alertas Activas</h3>
-                <ul id="alertList" class="list-group">
-                    <!-- Las alertas se insertarán aquí dinámicamente -->
-                </ul>
-            </div>
-        </div>
     </div>
 
-    <!-- Scripts de Bootstrap y Leaflet -->
-    <script src="node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
-    <script src="public/app.js"></script>
-    
-    <!-- Aquí puedes agregar los scripts para el gráfico y mapa -->
-    <script>
-        // Crear un mapa interactivo con Leaflet
-        const map = L.map('map').setView([40.7128, -74.0060], 4); // Inicializa el mapa centrado en Nueva York
-
-        // Añadir capa de mapa base (OpenStreetMap)
-        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-        }).addTo(map);
-
-        // Agregar marcadores de las ciudades (por ejemplo, Nueva York y Londres)
-        const cities = [
-            { name: "Nueva York", lat: 40.7128, lon: -74.0060 },
-            { name: "Londres", lat: 51.5074, lon: -0.1278 },
-            { name: "Tokio", lat: 35.6762, lon: 139.6503 }
-        ];
-
-        cities.forEach(city => {
-            L.marker([city.lat, city.lon])
-                .addTo(map)
-                .bindPopup(`<b>${city.name}</b>`)
-                .openPopup();
-        });
-
-        // Crear el gráfico de temperatura usando Chart.js
-        const ctxTemp = document.getElementById('temperatureChart').getContext('2d');
-        const temperatureChart = new Chart(ctxTemp, {
-            type: 'line',
-            data: {
-                labels: ['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado', 'Domingo'],
-                datasets: [{
-                    label: 'Temperatura (°C)',
-                    data: [18, 20, 22, 24, 23, 21, 19],
-                    borderColor: 'rgb(75, 192, 192)',
-                    fill: false
-                }]
-            }
-        });
-
-        // Crear el gráfico de tipos de cambio
-        const ctxRate = document.getElementById('exchangeRateChart').getContext('2d');
-        const exchangeRateChart = new Chart(ctxRate, {
-            type: 'bar',
-            data: {
-                labels: ['USD', 'GBP', 'EUR', 'JPY', 'AUD'],
-                datasets: [{
-                    label: 'Tipo de Cambio',
-                    data: [1.0, 0.75, 0.85, 110.5, 1.35], // Ejemplo de datos
-                    backgroundColor: 'rgba(54, 162, 235, 0.2)',
-                    borderColor: 'rgba(54, 162, 235, 1)',
-                    borderWidth: 1
-                }]
-            }
-        });
-    </script>
+    <!-- Scripts de Bootstrap -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
-
 </html>
