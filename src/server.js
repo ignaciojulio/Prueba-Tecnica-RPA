@@ -1,14 +1,15 @@
-import dotenv from 'dotenv';
-import express from 'express';
-import { fileURLToPath } from 'url';
-import { dirname } from 'path';
 import path from 'path';
-import { logger } from './lib/logger.js';
-import { collectCityData } from './lib/dataCollector.js';
-import { saveRawData, saveProcessedData } from './lib/dataStorage.js';
-import cities from './config/cities.js';
+import dotenv from 'dotenv';
 import cron from 'node-cron';
+import express from 'express';
+import { dirname } from 'path';
+import { fileURLToPath } from 'url';
+import cities from './config/cities.js';
+import { logger } from './lib/logger.js';
+import { checkWeatherAlert } from './rules/alerts.js'; 
+import { collectCityData } from './lib/dataCollector.js';
 import { calculateIVV, determineRiskLevel } from './rules/ivv.js';
+import { saveRawData, saveProcessedData } from './lib/dataStorage.js';
 
 dotenv.config();
 const router = express.Router();
@@ -32,17 +33,25 @@ router.get('/data', async (req, res) => {
     const cityData = await collectCityData(cities);
     await saveRawData(cityData, 'cityData_raw.json');
 
+    // Procesar los datos de la ciudad
     const processedData = cityData.map(city => {
+      const weatherAlerts = checkWeatherAlert(city.weather.temperature_2m, city.weather.precipitation, city.weather.wind_speed_10m);
+      const ivv = calculateIVV(weatherAlerts, city.exchange.trend, city.weather.uv_index);
+      const riskLevel = determineRiskLevel(ivv);
+
       return {
         ...city,
-        ivv: calculateIVV(city.weather, city.exchange, city.time),
-        riskLevel: determineRiskLevel(city.ivv),
+        ivv,
+        riskLevel,
+        alerts: weatherAlerts,
       };
     });
 
     await saveProcessedData(processedData, 'cityData_processed.json');
     logger.info('Datos recolectados y guardados exitosamente.');
-    res.json(cityData);
+
+    // Enviar los datos procesados con IVV y alertas
+    res.json(processedData);
 
   } catch (error) {
     logger.error(`Error al recolectar datos: ${error.message}`);
