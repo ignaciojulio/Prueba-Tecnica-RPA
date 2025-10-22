@@ -44,46 +44,64 @@ URLs de las APIs y la configuración del cronjob.
 ## Estructura del Proyecto
 El proyecto está organizado en la siguiente estructura de carpetas:
 ```bash
-├── data
-│ ├── processed
-│ │ └── cityData_processed.json
-│ └── raw
-│ └── cityData_raw.json
-├── logs
-│ ├── errors
-│ │ └── errors.log
-│ └── exec
-│ └── exec.log
-├── public
-│ ├── app.js
-│ ├── index.html
-│ ├── logo-mission-completo.png
-│ └── styles.css
-├── src
-│ ├── index.js
-│ ├── server.js
-│ ├── config
-│ │ └── cities.js
-│ ├── lib
-│ │ ├── dataCollector.js
-│ │ ├── dataStorage.js
-│ │ ├── http.js
-│ │ └── logger.js
-│ ├── pipeline
-│ │ └── runOnce.js
-│ ├── rules
-│ │ ├── alerts.js
-│ │ └── ivv.js
-│ └── services
-│ ├── fx.js
-│ ├── time.js
-│ └── weather.js
-└── tests
- ├── setup.js
- ├── rules
- │ └── ivv.test.js
- └── services
- └── api.test.js
+├───PruebaTecnica_IgnacioJulio
+│   .env
+│   .gitignore
+│   LICENSE
+│   package-lock.json
+│   package.json
+│   README.md
+│
+├───data
+│   ├───processed
+│   │       cityData_processed.json
+│   │
+│   └───raw
+│           cityData_raw.json
+│
+├───logs
+│   ├───errors
+│   │       errors.log
+│   │
+│   └───exec
+│           exec.log
+│
+├───public
+│       index.html
+│
+├───src
+│   │   index.js
+│   │   server.js
+│   │
+│   ├───config
+│   │       cities.js
+│   │
+│   ├───lib
+│   │       dataCollector.js
+│   │       dataStorage.js
+│   │       http.js
+│   │       logger.js
+│   │
+│   ├───pipeline
+│   │       runOnce.js
+│   │
+│   ├───rules
+│   │       alerts.js
+│   │       ivv.js
+│   │
+│   └───services
+│           fx.js
+│           time.js
+│           weather.js
+│
+└───tests
+    │   setup.js
+    │
+    ├───rules
+    │       ivv.test.js
+    │
+    └───services
+            api.test.js
 ```
 ## Funcionalidad
 ### Extracción de Datos
